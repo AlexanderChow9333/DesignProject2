@@ -1,0 +1,38 @@
+[
+  {
+    "name": "login",
+    "path": "/login",
+    "component": "/Users/alexander/Documents/GitHub/DesignProject2/pages/login.vue",
+    "chunkName": "pages/login"
+  },
+  {
+    "name": "projects",
+    "path": "/projects",
+    "component": "/Users/alexander/Documents/GitHub/DesignProject2/pages/projects.vue",
+    "chunkName": "pages/projects"
+  },
+  {
+    "name": "signup",
+    "path": "/signup",
+    "component": "/Users/alexander/Documents/GitHub/DesignProject2/pages/signup.vue",
+    "chunkName": "pages/signup"
+  },
+  {
+    "name": "timeBlocking",
+    "path": "/timeBlocking",
+    "component": "/Users/alexander/Documents/GitHub/DesignProject2/pages/timeBlocking.vue",
+    "chunkName": "pages/timeBlocking"
+  },
+  {
+    "name": "workTogether",
+    "path": "/workTogether",
+    "component": "/Users/alexander/Documents/GitHub/DesignProject2/pages/workTogether.vue",
+    "chunkName": "pages/workTogether"
+  },
+  {
+    "name": "index",
+    "path": "/",
+    "component": "/Users/alexander/Documents/GitHub/DesignProject2/pages/index.vue",
+    "chunkName": "pages/index"
+  }
+]

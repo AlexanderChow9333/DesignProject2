@@ -29,32 +29,43 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/typescript
-    '@nuxt/typescript-build'
+    '@nuxt/typescript-build',
+    '@nuxtjs/vuetify',
+    '@nuxtjs/fontawesome'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
+    '@nuxtjs/vuetify',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/firebase',
-    {
+    '@nuxtjs/firebase'
+  ],
+
+  fontawesome: {
+    icons: {
+      solid: true,
+      brands: true,
+    }
+  },
+
+  firebase: {
       config: {
-        apiKey: 'AIzaSyDsKl4zOr5yfcZMZ7qUBnyk20hXZTOVkCc',
-        authDomain: 'timemanagement-aed5b.firebaseapp.com',
-        projectId: 'timemanagement-aed5b',
-        storageBucket: 'timemanagement-aed5b.appspot.com',
-        messagingSenderId: '932640212870',
-        appId: '1:932640212870:web:079fc6010eb518c78b4e07',
-        measurementId: 'G-YFQV9JRETH'
+        apiKey: "AIzaSyDsKl4zOr5yfcZMZ7qUBnyk20hXZTOVkCc",
+        authDomain: "timemanagement-aed5b.firebaseapp.com",
+        projectId: "timemanagement-aed5b",
+        storageBucket: "timemanagement-aed5b.appspot.com",
+        messagingSenderId: "932640212870",
+        appId: "1:932640212870:web:079fc6010eb518c78b4e07",
+        measurementId: "G-YFQV9JRETH"
       },
       services: {
-        auth: true, // Just as example. Can be any other service.
+        auth: true,
         database: true
       }
-    }
-  ],
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
