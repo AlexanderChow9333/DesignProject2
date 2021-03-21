@@ -11,7 +11,14 @@
       :no-border-collapse=true
       :items="items"
       :fields="fields"
-    ></b-table>
+    >
+    <template #cell(remove)="row">
+      <!-- <div @click="completeTask(row.index)">
+        <b-form-checkbox :checked="items[row.index].status"></b-form-checkbox>
+      </div> -->
+      <b-button @click="removeData(row.index)" variant="danger">Remove</b-button>
+    </template>
+    </b-table>
     <div class="newButton btn bordered" v-b-modal.modal>
       New...
     </div>
@@ -28,7 +35,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
   export default {
     data() {
       return {
@@ -56,6 +63,9 @@
           {
             key: 'time',
             sortable: true,
+          },
+          {
+            key: 'remove',
           }
         ],
         items: [
@@ -77,7 +87,9 @@
     methods: {
       readData() {
         var projects = this.$fire.database.ref('users/'+this.$fire.auth.currentUser.uid+"/projects");
-        projects.on('value', this.gotData, this.errData)
+        projects.on('value', this.gotData, this.errData);
+        console.log("true")
+        console.log(this.$store.state.authState.loggedIn, "auth state")
       },
       addProject() {
         this.$fire.database.ref('users/'+this.$fire.auth.currentUser.uid+"/projects/"+this.newProject.name).set({
@@ -110,13 +122,17 @@
         }
         console.log(this.items)
       },
+      removeData(index: number) {
+        this.$fire.database.ref('users/'+this.$fire.auth.currentUser.uid+'/projects/'+this.items[index].name).remove();
+        // console.log(this.items[index]);
+        // // console.log(this.items, index);
+        // var data = this.$fire.database.ref('users/'+this.$fire.auth.currentUser.uid+"/timeblocking").get();
+        // console.log("Remove DATA", data);
+      },
       errData(err) {
         console.log('error', err);
       }
-    },
-    mounted () {
-      this.readData();
-    },
+    }
   }
 </script>
 

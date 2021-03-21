@@ -35,8 +35,9 @@
         this.$fire.auth.signOut()
           .then(() => {
             console.log(this.$fire.auth.currentUser)
+            this.$store.state.authState.loggedIn = false;
             window.location.replace('/login');
-          })
+          });
       }
     },
   }

@@ -41,7 +41,8 @@ export default {
     '@nuxtjs/vuetify',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/firebase'
+    '@nuxtjs/firebase',
+    '@nuxtjs/auth-next'
   ],
 
   fontawesome: {

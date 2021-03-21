@@ -7,7 +7,10 @@
                 <b-button @click="login()" variant="primary"><font-awesome-icon :icon="['fas', 'sign-in-alt']"/> Login </b-button>
                 <br>
                 <br>
+                <br>
                 <b-button class="google" variant="light"><font-awesome-icon style="margin-top:2px;" :icon="['fab', 'google']"/>   Sign in with Google</b-button>
+                <br><br><br>
+                <h6>Don't have an account yet? Sign up <a href="/signup">here.</a></h6>
             </b-card>
         </div>
     </div>
@@ -33,6 +36,7 @@
                     })
                     .then(() => {
                         if (loggedIn) {
+                            this.$store.state.authState.loggedIn = true;
                             window.location.replace('/projects');
                         }
                     })
@@ -61,7 +65,7 @@
     }
     .card{
         width:500px;
-        padding-bottom: 100px;
+        padding-bottom: 75px;
         /* height: 500px; */
     }
     .input {

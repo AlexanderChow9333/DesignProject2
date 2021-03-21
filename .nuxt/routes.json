@@ -3,36 +3,42 @@
     "name": "login",
     "path": "/login",
     "component": "/Users/alexander/Documents/GitHub/DesignProject2/pages/login.vue",
-    "chunkName": "pages/login"
+    "chunkName": "pages/login",
+    "_name": "_16790e6a"
   },
   {
     "name": "projects",
     "path": "/projects",
     "component": "/Users/alexander/Documents/GitHub/DesignProject2/pages/projects.vue",
-    "chunkName": "pages/projects"
+    "chunkName": "pages/projects",
+    "_name": "_e2c8beee"
   },
   {
     "name": "signup",
     "path": "/signup",
     "component": "/Users/alexander/Documents/GitHub/DesignProject2/pages/signup.vue",
-    "chunkName": "pages/signup"
+    "chunkName": "pages/signup",
+    "_name": "_0502abe7"
   },
   {
     "name": "timeBlocking",
     "path": "/timeBlocking",
     "component": "/Users/alexander/Documents/GitHub/DesignProject2/pages/timeBlocking.vue",
-    "chunkName": "pages/timeBlocking"
+    "chunkName": "pages/timeBlocking",
+    "_name": "_8a43329e"
   },
   {
     "name": "workTogether",
     "path": "/workTogether",
     "component": "/Users/alexander/Documents/GitHub/DesignProject2/pages/workTogether.vue",
-    "chunkName": "pages/workTogether"
+    "chunkName": "pages/workTogether",
+    "_name": "_a4673f0c"
   },
   {
     "name": "index",
     "path": "/",
     "component": "/Users/alexander/Documents/GitHub/DesignProject2/pages/index.vue",
-    "chunkName": "pages/index"
+    "chunkName": "pages/index",
+    "_name": "_4cd16b53"
   }
 ]
