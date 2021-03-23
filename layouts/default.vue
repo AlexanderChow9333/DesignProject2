@@ -11,6 +11,15 @@
     
   </div>
 </template>
-
+<script>
+  export default {
+    beforeMount () {
+      if (localStorage.getItem('loggedIn')!="true") {
+        window.location.replace('/login');
+      }
+      console.log(localStorage.getItem('loggedIn'));
+    },
+  }
+</script>
 <style>
 </style>

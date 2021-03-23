@@ -19,9 +19,9 @@
       </div>
       <hr>
       <b-input v-model="newTodo.name" class="input" placeholder="Name"> </b-input>
-      <b-input v-model="newTodo.time" class="input" placeholder="Time"> </b-input>
+      <b-form-timepicker v-model="newTodo.time" class="input"></b-form-timepicker>
       <b-button variant="primary" class="button" @click="addTodo(newTodo, time)">Add ToDo</b-button>
-      <b-button @click="readData()">Read Data</b-button>
+      <!-- <b-button @click="readData()">Read Data</b-button> -->
     </b-col>
     <b-col class="bordered col">
       <h1>Schedule</h1>
@@ -40,9 +40,15 @@
           <!-- <div @click="completeTask(row.index)">
             <b-form-checkbox :checked="items[row.index].status"></b-form-checkbox>
           </div> -->
-          <b-button @click="completeTask(row.index, false)" v-if="items[row.index].status" variant="success">Completed</b-button>
-          <b-button @click="completeTask(row.index, true)" v-else variant="secondary">Incomplete</b-button>
+          <b-button @click="completeTask(row.item.name, false)" v-if="items[row.index].status" variant="success">Completed</b-button>
+          <b-button @click="completeTask(row.item.name, true)" v-else variant="secondary">Incomplete</b-button>
           <b-button @click="removeData(row.index)" variant="danger">Remove</b-button>
+        </template>
+        <template #cell(name)="row">
+          <h6 :class="row.item.status==true? 'gray' : 'black'">{{row.item.name}}</h6>
+        </template>
+        <template #cell(time)="row">
+          <h6 :class="row.item.status==true? 'gray' : 'black'">{{row.item.time}}</h6>
         </template>
       </b-table>
     </b-col>
@@ -89,11 +95,11 @@ export default {
 		// 		this.todos.splice(index, 1);
 		// },
     readData() {
-      var projects = this.$fire.database.ref('users/'+this.$fire.auth.currentUser.uid+"/timeblocking");
+      var projects = this.$fire.database.ref('users/'+localStorage.getItem('uid')+"/timeblocking");
       projects.on('value', this.gotData, this.errData)
     },
     addTodo() {
-      this.$fire.database.ref('users/'+this.$fire.auth.currentUser.uid+"/timeblocking/"+this.newTodo.name).set({
+      this.$fire.database.ref('users/'+localStorage.getItem('uid')+"/timeblocking/"+this.newTodo.name).set({
         name: this.newTodo.name,
         time: this.newTodo.time,
         status: false
@@ -122,30 +128,31 @@ export default {
       console.log(this.items)
     },
     removeData(index: number) {
-      this.$fire.database.ref('users/'+this.$fire.auth.currentUser.uid+'/timeblocking/'+this.items[index].name).remove();
-      // console.log(this.items[index]);
-      // // console.log(this.items, index);
-      // var data = this.$fire.database.ref('users/'+this.$fire.auth.currentUser.uid+"/timeblocking").get();
-      // console.log("Remove DATA", data);
+      this.$fire.database.ref('users/'+localStorage.getItem('uid')+'/timeblocking/'+this.items[index].name).remove();
     },
     errData(err: any) {
       console.log('error', err);
     },
-    completeTask(index: number, completedBool: boolean) {
-      this.$fire.database.ref('users/'+this.$fire.auth.currentUser.uid+"/timeblocking/"+this.items[index].name).set({
-        name: this.items[index].name,
-        time: this.items[index].time,
+    completeTask(name: string, completedBool: boolean) {
+      this.$fire.database.ref('users/'+localStorage.getItem('uid')+"/timeblocking/"+name).update({
         status: completedBool
       });
       console.log(this.items, "items")
     }
 
   },
+  mounted() {
+    this.readData();
+  }
 }
 
 </script>
 
 <style scoped>
+  .gray {
+    color: gray;
+    text-decoration: line-through;
+  }
   .removeBtn{
     margin-left: 70px;
   }

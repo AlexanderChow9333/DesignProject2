@@ -1,0 +1,2 @@
+localStorage.loggedIn;
+localStorage.uid;

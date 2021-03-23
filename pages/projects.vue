@@ -12,26 +12,48 @@
       :items="items"
       :fields="fields"
     >
-    <template #cell(remove)="row">
-      <!-- <div @click="completeTask(row.index)">
-        <b-form-checkbox :checked="items[row.index].status"></b-form-checkbox>
-      </div> -->
-      <b-button @click="removeData(row.index)" variant="danger">Remove</b-button>
-    </template>
+      <template #cell(remove)="row">
+        <!-- <div @click="completeTask(row.index)">
+          <b-form-checkbox :checked="items[row.index].status"></b-form-checkbox>
+        </div> -->
+        <b-button @click="removeData(row.item.name)" variant="danger">Remove</b-button>
+        <b-button @click="editProjectIndex(row.index)" variant="primary" v-b-modal.editModal>Edit</b-button>
+      </template>
+      <template #cell(importance)="row">
+        <!-- <div @click="completeTask(row.index)">
+          <b-form-checkbox :checked="items[row.index].status"></b-form-checkbox>
+        </div> -->
+          <b-badge :variant=" row.item.importance=='High'? 'danger' : row.item.importance=='Medium' ? 'warning' : 'success' "><h6 style="margin-top: 5px;">{{row.item.importance}}</h6></b-badge>
+      </template>
+      <template #cell(status)="row">
+          <b-badge :variant=" row.item.status=='Not Started'? 'danger' : row.item.status=='In Progress' ? 'warning' : 'success' "><h6 style="margin-top: 5px;">{{row.item.status}}</h6></b-badge>
+      </template>
     </b-table>
-    <div class="newButton btn bordered" v-b-modal.modal>
+    <div class="newButton btn bordered" v-b-modal.newModal>
       New...
     </div>
-    <b-modal id="modal" title="Add Project">
+    <b-modal id="newModal" title="Add Project">
       <b-input v-model="newProject.name" class="input" placeholder="Name"></b-input>
-      <b-input v-model="newProject.date" class="input" placeholder="Due Date"></b-input>
+      <b-form-datepicker v-model="newProject.date" class="input"></b-form-datepicker>
       <b-input v-model="newProject.type" class="input" placeholder="Type"></b-input>
-      <b-input v-model="newProject.status" class="input" placeholder="Status"></b-input>
-      <b-input v-model="newProject.importance" class="input" placeholder="Importance"></b-input>
-      <b-input v-model="newProject.time" class="input" placeholder="Time (hrs)"></b-input>
+      <b-form-select v-model="newProject.status" :options="statusOptions" class="input" ></b-form-select>
+      <br>
+      <b-form-select v-model="newProject.importance" :options="importanceOptions" class="input" ></b-form-select>
+      <b-input v-model="newProject.time" class="input" type="number" placeholder="Time (hrs)"></b-input>
       <b-button variant="success" @click="addProject()">Add</b-button>
   </b-modal>
-  <b-button @click="readData()">read data</b-button>
+
+  <b-modal id="editModal" title="Edit Project">
+    <b-input v-model="updatedProject.name" class="input" placeholder="Name" disabled></b-input>
+    <b-form-datepicker v-model="updatedProject.date" class="input"></b-form-datepicker>
+    <b-input v-model="updatedProject.type" class="input" placeholder="Type"></b-input>
+    <b-form-select v-model="updatedProject.status" :options="statusOptions" class="input" ></b-form-select>
+    <br>
+    <b-form-select v-model="updatedProject.importance" :options="importanceOptions" class="input" ></b-form-select>
+    <b-input v-model="updatedProject.time" class="input" type="number" placeholder="Time (hrs)"></b-input>
+    <b-button variant="success" @click="editProject()">Save</b-button>
+  </b-modal>
+  <!-- <b-button @click="readData()">read data</b-button> -->
   </div>
 </template>
 
@@ -39,6 +61,18 @@
   export default {
     data() {
       return {
+        statusOptions: [
+          {value: null, text: 'Status'},
+          {value: "Not Started", text: 'Not Started'},
+          {value: "In Progress", text: 'In Progress'},
+          {value: "Completed", text: 'Completed'},
+        ],
+        importanceOptions: [
+          {value: null, text: 'Importance'},
+          {value: "Low", text: 'Low'},
+          {value: "Medium", text: 'Medium'},
+          {value: "High", text: 'High'},
+        ],
         fields: [
           {
             key: 'name',
@@ -46,7 +80,8 @@
           },
           {
             key: 'date',
-            sortable: true
+            sortable: true,
+            label: 'Due Date'
           },
           {
             key: 'type',
@@ -63,17 +98,14 @@
           {
             key: 'time',
             sortable: true,
+            label: 'Time (hrs)'
           },
           {
             key: 'remove',
+            label: 'Remove/Edit'
           }
         ],
-        items: [
-          { age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
-          { age: 21, first_name: 'Larsen', last_name: 'Shaw' },
-          { age: 89, first_name: 'Geneva', last_name: 'Wilson' },
-          { age: 38, first_name: 'Jami', last_name: 'Carney' }
-        ],
+        items: [],
         newProject: {
           name: null,
           date: null,
@@ -81,18 +113,33 @@
           status: null,
           importance: null,
           time: null,
+        },
+        updatedProject: {
+          name: null,
+          date: null,
+          type: null,
+          status: null,
+          importance: null,
+          time: null,
+          index: null
         }
       }
     },
     methods: {
+      setStatus(val:string) {
+        this.newProject.status = val;
+      },
+      setImportance(val:string) {
+        this.newProject.importance = val;
+      },
       readData() {
-        var projects = this.$fire.database.ref('users/'+this.$fire.auth.currentUser.uid+"/projects");
+        var projects = this.$fire.database.ref('users/'+localStorage.getItem('uid')+"/projects");
         projects.on('value', this.gotData, this.errData);
         console.log("true")
-        console.log(this.$store.state.authState.loggedIn, "auth state")
+        console.log(localStorage.getItem('loggedIn'), "auth state")
       },
       addProject() {
-        this.$fire.database.ref('users/'+this.$fire.auth.currentUser.uid+"/projects/"+this.newProject.name).set({
+        this.$fire.database.ref('users/'+localStorage.getItem('uid')+"/projects/"+this.newProject.name).set({
           name: this.newProject.name,
           date: this.newProject.date,
           type: this.newProject.type,
@@ -107,12 +154,35 @@
         this.newProject.importance = "";
         this.newProject.time = "";
       },
+      editProjectIndex(index:number) {
+        this.updatedProject.name = this.items[index].name;
+        this.updatedProject.date = this.items[index].date;
+        this.updatedProject.type = this.items[index].type;
+        this.updatedProject.status = this.items[index].status;
+        this.updatedProject.importance = this.items[index].importance;
+        this.updatedProject.time = this.items[index].time;
+        console.log(this.updatedProject, "update")
+      },
+      editProject() {
+        this.$fire.database.ref('users/'+localStorage.getItem('uid')+"/projects/"+this.updatedProject.name).update({
+          name: this.updatedProject.name,
+          date: this.updatedProject.date,
+          type: this.updatedProject.type,
+          status: this.updatedProject.status,
+          importance: this.updatedProject.importance,
+          time: this.updatedProject.time,
+        });
+      },
       gotData(data) {
         console.log("data");
-        var val = Object.entries(data.val());
+        if(data.val()) {
+          var val = Object.entries(data.val());
+        }
+        else {
+          var val = [];
+        }
         this.setData(val);
-        console.log(Object.entries(data.val()));
-        console.log('users/'+this.$fire.auth.currentUser.uid+"/projects");
+        console.log(Object.entries(data.val()))
       },
       setData(data) {
         this.items=[];
@@ -122,24 +192,23 @@
         }
         console.log(this.items)
       },
-      removeData(index: number) {
-        this.$fire.database.ref('users/'+this.$fire.auth.currentUser.uid+'/projects/'+this.items[index].name).remove();
-        // console.log(this.items[index]);
-        // // console.log(this.items, index);
-        // var data = this.$fire.database.ref('users/'+this.$fire.auth.currentUser.uid+"/timeblocking").get();
-        // console.log("Remove DATA", data);
+      removeData(name: string) {
+        this.$fire.database.ref('users/'+localStorage.getItem('uid')+'/projects/'+name).remove();
+        console.log(this.items);
       },
       errData(err) {
         console.log('error', err);
       }
+    },
+    mounted() {
+      this.readData();
     }
   }
 </script>
 
 <style scoped>
   .input {
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
   }
   .newButton {
     padding: 10px;
