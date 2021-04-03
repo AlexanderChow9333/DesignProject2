@@ -26,6 +26,7 @@
       <b-nav-item class="nav-item" active href="projects" ><h5>Projects</h5></b-nav-item>
       <b-nav-item class="nav-item" href="timeBlocking" ><h5>Time Blocking</h5></b-nav-item>
       <b-nav-item class="nav-item" href="workTogether" ><h5>Work Together</h5></b-nav-item>
+      <b-nav-item class="nav-item" href="profile" ><h5>Edit Profile</h5></b-nav-item>
       <b-nav-item class="nav-item logout" @click="logout()"><h5>Logout</h5></b-nav-item>
     </b-nav>
   </div>
@@ -49,7 +50,6 @@
         this.setData(val);
       },
       setData(data) {
-        console.log(data);
         for (let i = 0; i < data.length; i++) {
           if (data[i][0] == "name") {
             this.username = data[i][1];
@@ -62,7 +62,6 @@
       logout() {
         this.$fire.auth.signOut()
           .then(() => {
-            console.log(this.$fire.auth.currentUser)
             localStorage.setItem('loggedIn', "false")
             window.location.replace('/login');
           });

@@ -99,6 +99,13 @@ export default {
       projects.on('value', this.gotData, this.errData)
     },
     addTodo() {
+      for (let i = 0; i < this.items.length; i++) {
+        const todo = this.items[i];
+        if (todo.time == this.newTodo.time) {
+          alert("Warning: the time that you specified for your new event overlaps with another event");
+        }
+      }
+      console.log(this.items[0], "hi");
       this.$fire.database.ref('users/'+localStorage.getItem('uid')+"/timeblocking/"+this.newTodo.name).set({
         name: this.newTodo.name,
         time: this.newTodo.time,

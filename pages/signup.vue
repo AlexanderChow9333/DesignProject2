@@ -44,11 +44,10 @@
                         signupSuccess = true;
                         })
                     .then(() => {
-                        if (signupSuccess) {
+                        if (signupSuccess==true) {
+                            localStorage.setItem('uid', this.$fire.auth.currentUser.uid);
                             this.writeUserData();
                             localStorage.setItem('loggedIn', "true");
-                            localStorage.setItem('uid', this.$fire.auth.currentUser.uid);
-                            window.location.replace('/projects');
                         }
                     })
                     .catch(error => {
@@ -86,14 +85,16 @@
                         // ...
                 });
             },
-            writeUserData() {
+            async writeUserData() {
                 console.log(this.$fire.auth.currentUser.uid);
-                this.$fire.database.ref('users/'+this.$fire.auth.currentUser.uid).set({
+                await this.$fire.database.ref('users/'+localStorage.getItem('uid')).set({
                     email: this.email,
                     name: this.name,
                     year: this.year
                 });
                 console.log("write user data")
+                window.location.replace('/projects');
+
             }
         },
     }

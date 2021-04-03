@@ -7,6 +7,13 @@
     "_name": "_16790e6a"
   },
   {
+    "name": "profile",
+    "path": "/profile",
+    "component": "/Users/alexander/Documents/GitHub/DesignProject2/pages/profile.vue",
+    "chunkName": "pages/profile",
+    "_name": "_579bf26a"
+  },
+  {
     "name": "projects",
     "path": "/projects",
     "component": "/Users/alexander/Documents/GitHub/DesignProject2/pages/projects.vue",
